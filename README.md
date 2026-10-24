@@ -22,8 +22,8 @@ CleanYourPhone รวม **รายการแพ็กเกจแยกต�
 1. ติดตั้ง [Claude Code](https://claude.com/claude-code), Codex CLI หรือ Gemini CLI
 2. ดาวน์โหลดโปรเจกต์นี้
    ```bash
-   git clone https://github.com/thananat-dev/cleanyourphone.git
-   cd cleanyourphone
+   git clone https://github.com/thananat-dev/CleanYourPhone.git
+   cd CleanYourPhone
    ```
 3. พิมพ์กับ AI: **`อ่าน PROMPT.md แล้วช่วยทำความสะอาดมือถือของฉัน`**
 
