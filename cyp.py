@@ -163,7 +163,8 @@ def cmd_info(adb: Adb, args) -> int:
 
 def cmd_backup(adb: Adb, args) -> Path:
     info = device_info(adb)
-    stamp = _dt.datetime.now().strftime("%Y%m%d-%H%M%S")
+    now = _dt.datetime.now()
+    stamp = now.strftime("%Y%m%d-%H%M%S")
     safe_model = "".join(c if c.isalnum() else "-" for c in info["model"]) or "device"
     out = BACKUP_DIR / f"{safe_model}-{stamp}"
     n = 1
@@ -171,7 +172,7 @@ def cmd_backup(adb: Adb, args) -> Path:
         n += 1
         out = BACKUP_DIR / f"{safe_model}-{stamp}-{n}"
     out.mkdir(parents=True)
-    data = {"tool_version": __version__, "created": stamp, "device": info,
+    data = {"tool_version": __version__, "created": now.isoformat(timespec="microseconds"), "device": info,
             "state": snapshot(adb), "actions": []}
     (out / "backup.json").write_text(json.dumps(data, indent=2, ensure_ascii=False),
                                      encoding="utf-8")
