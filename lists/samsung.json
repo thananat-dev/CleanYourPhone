@@ -1,0 +1,66 @@
+{
+  "family": "samsung",
+  "description": "Samsung Galaxy (One UI)",
+  "packages": [
+    {
+      "id": "com.samsung.android.app.spage",
+      "name": "Samsung Free",
+      "tier": "recommended",
+      "note": "หน้าฟีดข่าวด้านซ้ายที่มีโฆษณา"
+    },
+    {
+      "id": "com.samsung.android.rubin.app",
+      "name": "Customization Service",
+      "tier": "recommended",
+      "note": "เก็บข้อมูลพฤติกรรมเพื่อปรับโฆษณาและคำแนะนำ"
+    },
+    {
+      "id": "com.samsung.android.app.tips",
+      "name": "Tips",
+      "tier": "safe",
+      "note": "แจ้งเตือนแนะนำฟีเจอร์"
+    },
+    {
+      "id": "com.samsung.android.game.gamehome",
+      "name": "Game Launcher",
+      "tier": "safe",
+      "note": "ปิดแล้วเกมยังเล่นได้ แต่ไม่มี Game Booster"
+    },
+    {
+      "id": "com.samsung.android.ardrawing",
+      "name": "AR Doodle",
+      "tier": "safe",
+      "note": "ฟีเจอร์ AR ในกล้อง"
+    },
+    {
+      "id": "com.samsung.android.kidsinstaller",
+      "name": "Samsung Kids Installer",
+      "tier": "safe",
+      "note": "ตัวติดตั้งโหมดเด็ก"
+    },
+    {
+      "id": "com.samsung.android.app.watchmanagerstub",
+      "name": "Galaxy Wearable stub",
+      "tier": "safe",
+      "note": "ถ้าใช้ Galaxy Watch อยู่อย่าปิด"
+    },
+    {
+      "id": "com.samsung.android.visionintelligence",
+      "name": "Bixby Vision",
+      "tier": "safe",
+      "note": "ฟีเจอร์ค้นหาด้วยกล้อง"
+    },
+    {
+      "id": "com.samsung.android.bixby.wakeup",
+      "name": "Bixby Voice Wake-up",
+      "tier": "safe",
+      "note": "การปลุก Bixby ด้วยเสียง"
+    },
+    {
+      "id": "com.samsung.android.bixby.agent",
+      "name": "Bixby Voice",
+      "tier": "advanced",
+      "note": "ปิดแล้วใช้ Bixby ไม่ได้ ปุ่มข้างอาจต้องตั้งค่าใหม่"
+    }
+  ]
+}

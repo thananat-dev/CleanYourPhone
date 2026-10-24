@@ -1,0 +1,90 @@
+{
+  "family": "xiaomi",
+  "description": "Xiaomi / Redmi / POCO (MIUI, HyperOS)",
+  "packages": [
+    {
+      "id": "com.miui.msa.global",
+      "name": "MSA (MIUI System Ads)",
+      "tier": "recommended",
+      "note": "ต้นเหตุโฆษณาในแอประบบ ปิดแล้วโฆษณาลดลงชัดเจน"
+    },
+    {
+      "id": "com.miui.analytics",
+      "name": "MIUI Analytics",
+      "tier": "recommended",
+      "note": "ส่งข้อมูลการใช้งานกลับ Xiaomi"
+    },
+    {
+      "id": "com.miui.daemon",
+      "name": "MIUI Daemon",
+      "tier": "recommended",
+      "note": "เก็บสถิติระบบและส่งกลับ"
+    },
+    {
+      "id": "com.miui.android.fashiongallery",
+      "name": "Wallpaper Carousel",
+      "tier": "recommended",
+      "note": "รูปล็อกสกรีนที่มีโฆษณาแฝง"
+    },
+    {
+      "id": "com.miui.hybrid",
+      "name": "Quick Apps",
+      "tier": "recommended",
+      "note": "มินิแอปที่มักเด้งโฆษณา"
+    },
+    {
+      "id": "com.miui.hybrid.accessory",
+      "name": "Quick Apps Accessory",
+      "tier": "recommended",
+      "note": "ส่วนเสริมของ Quick Apps"
+    },
+    {
+      "id": "com.xiaomi.mipicks",
+      "name": "GetApps",
+      "tier": "safe",
+      "note": "ร้านแอปของ Xiaomi มีโฆษณาและแจ้งเตือนเยอะ"
+    },
+    {
+      "id": "com.xiaomi.glgm",
+      "name": "Games",
+      "tier": "safe",
+      "note": "ศูนย์รวมเกมพร้อมโฆษณา"
+    },
+    {
+      "id": "com.miui.yellowpage",
+      "name": "Yellow Pages",
+      "tier": "safe",
+      "note": "สมุดหน้าเหลือง ไม่ได้ใช้ในไทย"
+    },
+    {
+      "id": "com.miui.videoplayer",
+      "name": "Mi Video",
+      "tier": "safe",
+      "note": "มีฟีดวิดีโอโฆษณา ใช้ VLC หรือ Google Photos แทนได้"
+    },
+    {
+      "id": "com.miui.player",
+      "name": "Mi Music",
+      "tier": "safe",
+      "note": "มีฟีดโฆษณา"
+    },
+    {
+      "id": "com.miui.bugreport",
+      "name": "Bug Report",
+      "tier": "safe",
+      "note": "ส่งรายงานบั๊ก"
+    },
+    {
+      "id": "com.mi.globalbrowser",
+      "name": "Mi Browser",
+      "tier": "advanced",
+      "note": "ถ้าตั้งเป็นเบราว์เซอร์หลักอยู่ ให้เปลี่ยนเป็น Chrome ก่อน"
+    },
+    {
+      "id": "com.xiaomi.joyose",
+      "name": "Joyose",
+      "tier": "advanced",
+      "note": "คุมประสิทธิภาพและเก็บข้อมูล บางรุ่นมีผลกับการจำกัดความร้อนตอนเล่นเกม"
+    }
+  ]
+}

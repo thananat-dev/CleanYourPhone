@@ -1,0 +1,6 @@
+# ไฟล์สำรองของแต่ละเครื่อง — มีรายการแอปส่วนตัว ห้าม commit
+backups/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store

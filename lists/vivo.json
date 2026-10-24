@@ -1,0 +1,42 @@
+{
+  "family": "vivo",
+  "description": "vivo / iQOO (Funtouch OS, OriginOS)",
+  "packages": [
+    {
+      "id": "com.vivo.hybrid",
+      "name": "Quick Apps",
+      "tier": "recommended",
+      "note": "มินิแอปที่มักเด้งโฆษณา"
+    },
+    {
+      "id": "com.vivo.globalsearch",
+      "name": "Global Search",
+      "tier": "safe",
+      "note": "ช่องค้นหาที่มีคำแนะนำสปอนเซอร์"
+    },
+    {
+      "id": "com.vivo.assistant",
+      "name": "Jovi Smart Scene",
+      "tier": "safe",
+      "note": "การ์ดผู้ช่วยหน้าโฮม"
+    },
+    {
+      "id": "com.bbk.theme",
+      "name": "Themes",
+      "tier": "advanced",
+      "note": "ร้านธีมที่มีโฆษณา ปิดแล้วเปลี่ยนธีมไม่ได้"
+    },
+    {
+      "id": "com.vivo.browser",
+      "name": "Browser",
+      "tier": "advanced",
+      "note": "ถ้าตั้งเป็นเบราว์เซอร์หลักอยู่ ให้เปลี่ยนเป็น Chrome ก่อน"
+    },
+    {
+      "id": "com.vivo.appstore",
+      "name": "V-Appstore",
+      "tier": "advanced",
+      "note": "ร้านแอปของ vivo ปิดแล้วจะไม่ได้รับอัปเดตแอประบบบางตัว"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "family": "common",
+  "description": "แพ็กเกจที่พบได้ในหลายยี่ห้อ",
+  "packages": [
+    {
+      "id": "com.facebook.appmanager",
+      "name": "Facebook App Manager",
+      "tier": "safe",
+      "note": "ตัวอัปเดต Facebook ที่ติดมากับ ROM ไม่กระทบแอป Facebook ที่ลงจาก Play Store"
+    },
+    {
+      "id": "com.facebook.services",
+      "name": "Facebook Services",
+      "tier": "safe",
+      "note": "บริการพื้นหลังของ Facebook ที่ติดมากับ ROM"
+    },
+    {
+      "id": "com.facebook.system",
+      "name": "Facebook App Installer",
+      "tier": "safe",
+      "note": "ตัวติดตั้งแอป Facebook อัตโนมัติ"
+    },
+    {
+      "id": "com.netflix.partner.activation",
+      "name": "Netflix Partner Activation",
+      "tier": "safe",
+      "note": "stub เปิดใช้งาน Netflix ของผู้ผลิต ไม่กระทบแอป Netflix"
+    },
+    {
+      "id": "com.google.android.apps.tachyon",
+      "name": "Google Meet (preinstalled)",
+      "tier": "safe",
+      "note": "ลงใหม่จาก Play Store ได้ถ้าต้องการ"
+    },
+    {
+      "id": "com.google.android.videos",
+      "name": "Google TV",
+      "tier": "safe",
+      "note": "แอปเช่าหนัง ลงใหม่ได้"
+    },
+    {
+      "id": "com.google.android.apps.youtube.music",
+      "name": "YouTube Music",
+      "tier": "safe",
+      "note": "ลงใหม่จาก Play Store ได้"
+    },
+    {
+      "id": "com.google.android.feedback",
+      "name": "Google Feedback",
+      "tier": "recommended",
+      "note": "ส่งรายงานปัญหาไป Google"
+    },
+    {
+      "id": "com.google.android.partnersetup",
+      "name": "Google Partner Setup",
+      "tier": "advanced",
+      "note": "ผูกกับการตั้งค่าเริ่มต้นของผู้ผลิต บางเครื่องใช้ตอนรีเซ็ต"
+    }
+  ]
+}

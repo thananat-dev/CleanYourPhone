@@ -1,0 +1,54 @@
+{
+  "family": "oplus",
+  "description": "OPPO / realme / OnePlus (ColorOS, realme UI, OxygenOS)",
+  "packages": [
+    {
+      "id": "com.opos.ads",
+      "name": "OPPO Ads",
+      "tier": "recommended",
+      "note": "ระบบโฆษณาของ ROM"
+    },
+    {
+      "id": "com.nearme.statistics.rom",
+      "name": "ROM Statistics",
+      "tier": "recommended",
+      "note": "เก็บสถิติการใช้งาน"
+    },
+    {
+      "id": "com.heytap.pictorial",
+      "name": "Lock Screen Magazine",
+      "tier": "recommended",
+      "note": "รูปล็อกสกรีนที่มีเนื้อหาสปอนเซอร์"
+    },
+    {
+      "id": "com.coloros.assistantscreen",
+      "name": "Smart Assistant",
+      "tier": "safe",
+      "note": "หน้าการ์ดด้านซ้ายของหน้าโฮม"
+    },
+    {
+      "id": "com.heytap.themestore",
+      "name": "Theme Store",
+      "tier": "advanced",
+      "note": "ร้านธีมที่มีโฆษณา ปิดแล้วเปลี่ยนธีมไม่ได้"
+    },
+    {
+      "id": "com.heytap.browser",
+      "name": "Browser",
+      "tier": "advanced",
+      "note": "ถ้าตั้งเป็นเบราว์เซอร์หลักอยู่ ให้เปลี่ยนเป็น Chrome ก่อน"
+    },
+    {
+      "id": "com.heytap.market",
+      "name": "App Market",
+      "tier": "advanced",
+      "note": "ร้านแอปของ OPPO ปิดแล้วจะไม่ได้รับอัปเดตแอประบบบางตัว"
+    },
+    {
+      "id": "com.heytap.mcs",
+      "name": "HeyTap Push",
+      "tier": "advanced",
+      "note": "ระบบ push ของแอป HeyTap ปิดแล้วแจ้งเตือนจากแอปของผู้ผลิตอาจหาย"
+    }
+  ]
+}
