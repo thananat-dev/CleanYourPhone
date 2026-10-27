@@ -5,6 +5,7 @@
 """
 import io
 import json
+import re
 import sys
 import unittest
 from contextlib import redirect_stdout
@@ -111,6 +112,38 @@ class DiagnoseTest(unittest.TestCase):
     def test_battery_saver_flagged(self):
         raw = load("healthy") | {"low_power": "1"}
         self.assertIn("low_power", {f.key for f in doctor.diagnose(raw).findings})
+
+
+class RealDeviceTest(unittest.TestCase):
+    """ค่าดิบจากเครื่องจริง (ชื่อแอปส่วนตัวถูกซ่อนแล้ว)"""
+
+    def test_galaxy_a14_after_cleanup(self):
+        # issue #1: หลังลบวิดีโอ ~80 GB และ apply --tier safe ผู้ใช้รายงานว่าลื่นขึ้นชัดเจน
+        raw = load("galaxy_a14_oneui7")
+        r = doctor.diagnose(raw)
+        self.assertEqual([f for f in r.findings if f.level != "tip"], [])
+        self.assertEqual(r.score, 100)
+        self.assertEqual(r.unknown, [])                       # อ่านได้ครบทุกหมวด
+        self.assertIn("79%", r.facts["storage"])              # df คืน /data/user/0
+        self.assertIn("normal", r.facts["ram"])               # Android 15 ใช้ "Total RSS by process"
+        self.assertIn("ความจุเหลือ 98%", r.facts["battery"])  # Samsung ASOC
+        self.assertEqual(r.facts["temps"]["battery"], 30.0)   # SUBBAT 0.0 ไม่ถูกนำมาคิด
+        self.assertTrue(r.facts["ram_hogs"][0].startswith("Huawei Health"))  # รวม :DaemonService แล้ว
+
+    def test_galaxy_a14_same_phone_with_full_storage(self):
+        # จำลองสภาพก่อนลบวิดีโอ (97% เต็ม, iowait 4.8%) บนค่าดิบจริงชุดเดียวกัน
+        raw = load("galaxy_a14_oneui7")
+        raw["df"] = raw["df"].replace("23920620  88729620  22%", "109397873   3383439  97%")
+        raw["cpuinfo"] = re.sub(r"^[\d.]+% TOTAL:.*$", "15% TOTAL: 8% user + 2% kernel + 4.8% iowait",
+                                raw["cpuinfo"], flags=re.M)
+        keys = {f.key: f.level for f in doctor.diagnose(raw).findings}
+        self.assertEqual(keys.get("storage"), "high")
+        self.assertEqual(keys.get("iowait"), "medium")
+
+    def test_worn_samsung_battery(self):
+        raw = load("galaxy_a14_oneui7")
+        raw["battery"] = raw["battery"].replace("mSavedBatteryAsoc: [98]", "mSavedBatteryAsoc: [74]")
+        self.assertIn("battery_health", {f.key for f in doctor.diagnose(raw).findings})
 
 
 class DoctorCommandTest(unittest.TestCase):

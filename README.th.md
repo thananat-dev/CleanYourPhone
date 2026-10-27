@@ -79,11 +79,12 @@ python cyp.py connect 192.168.1.20:41427                      # พอร์ต�
 | RAM ไม่พอ / ใช้ RAM เสมือนหนัก | `/proc/meminfo`, `dumpsys meminfo` |
 | แอปที่กิน CPU และ RAM, ดิสก์ช้า (iowait) | `dumpsys cpuinfo`, `dumpsys meminfo` |
 | เครื่องร้อนจนถูกลดความเร็ว | `dumpsys thermalservice`, `dumpsys battery` |
-| แบตเสื่อม, โหมดประหยัดแบต | `dumpsys battery`, `settings get` |
+| แบตเสื่อม (Samsung บอกความจุที่เหลือได้), โหมดประหยัดแบต | `dumpsys battery`, `settings get` |
 | แอนิเมชันช้า, ไม่ได้รีสตาร์ตนาน, แอปเยอะ | `settings get`, `/proc/uptime`, `pm list` |
 | แอปพ่วงของผู้ผลิตที่ยังเปิดอยู่ | รายการใน `lists/` |
 
 ใช้ `--json` เพื่อให้ AI agent อ่านต่อ หรือใช้ `--save-raw file.json` เพื่อเก็บค่าดิบไว้แนบใน issue
+(รัน `python tools/anonymize_dump.py file.json -o file.anon.json` ก่อนแนบ เพื่อซ่อนชื่อแอปส่วนตัว)
 
 ## ระดับความเสี่ยง
 

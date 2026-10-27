@@ -85,11 +85,12 @@ the phone down and what to do about it.
 | RAM pressure, heavy zram / virtual RAM use | `/proc/meminfo`, `dumpsys meminfo` |
 | CPU and RAM hogs, slow storage (iowait) | `dumpsys cpuinfo`, `dumpsys meminfo` |
 | Thermal throttling | `dumpsys thermalservice`, `dumpsys battery` |
-| Worn battery, battery saver on | `dumpsys battery`, `settings get` |
+| Worn battery (remaining capacity on Samsung), battery saver on | `dumpsys battery`, `settings get` |
 | Slow animations, long uptime, too many apps | `settings get`, `/proc/uptime`, `pm list` |
 | Manufacturer bloat still enabled | package lists in `lists/` |
 
 `--save-raw file.json` saves the raw readings so you can attach them to an issue and help tune the thresholds.
+Run `python tools/anonymize_dump.py file.json -o file.anon.json` first to hide the names of private apps.
 
 ## Risk tiers
 

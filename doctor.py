@@ -34,7 +34,10 @@ APP_NAMES = {
     "com.tencent.ig": "PUBG Mobile", "com.garena.game.kgth": "RoV",
     "com.mobile.legends": "Mobile Legends", "com.netflix.mediaclient": "Netflix",
     "com.spotify.music": "Spotify", "com.whatsapp": "WhatsApp",
-    "com.huawei.health": "Huawei Health", "com.mi.health": "Mi Fitness",
+    "com.huawei.health": "Huawei Health", "com.sec.android.app.shealth": "Samsung Health",
+    "com.linecorp.linemanth": "LINE MAN", "com.linecorp.lineoa": "LINE OA",
+    "com.microsoft.office.outlook": "Outlook", "us.zoom.videomeetings": "Zoom",
+    "com.linkedin.android": "LinkedIn", "com.mi.health": "Mi Fitness",
     "com.xiaomi.wearable": "Mi Fitness", "com.samsung.android.app.watchmanager": "Galaxy Wearable",
 }
 
@@ -153,6 +156,10 @@ def parse_battery(text: str) -> dict:
             out[key] = int(m.group(1))
     if "temperature" in out:
         out["temperature"] = out["temperature"] / 10
+    # Samsung รายงานความจุแบตที่เหลือเทียบกับตอนใหม่ (ASOC) เป็น %
+    m = re.search(r"mSavedBatteryAsoc:\s*\[(\d+)\]", text) or re.search(r"AsocData efsValue:(\d+)", text)
+    if m and 0 < int(m.group(1)) <= 100:
+        out["capacity"] = int(m.group(1))
     return out
 
 
@@ -332,6 +339,12 @@ def diagnose(raw: dict, bloat_enabled: list[str] | None = None) -> Report:
     # --- แบตเตอรี่และโหมดประหยัด ---------------------------------------------------
     if "level" in bat:
         r.facts["battery"] = f"{bat['level']}%, สภาพ{BATTERY_HEALTH.get(bat.get('health', 1), '?')}"
+        if "capacity" in bat:
+            r.facts["battery"] += f", ความจุเหลือ {bat['capacity']}%"
+    if bat.get("capacity", 100) < 80 and bat.get("health") not in (3, 4, 5, 6):
+        r.add("medium", "battery_health", f"แบตเตอรี่เสื่อม ความจุเหลือ {bat['capacity']}%",
+              "แบตที่เสื่อมจ่ายไฟได้ไม่พอ บางรุ่นจะลดความเร็ว CPU ลงเพื่อกันเครื่องดับ และหมดเร็วกว่าเดิม",
+              "พิจารณาเปลี่ยนแบตเตอรี่ที่ศูนย์บริการ (ปกติแนะนำเมื่อต่ำกว่า 80%)")
     if bat.get("health") in (3, 4, 5, 6):
         r.add("medium", "battery_health", f"แบตเตอรี่{BATTERY_HEALTH[bat['health']]}",
               "แบตที่เสื่อมจ่ายไฟได้ไม่พอ บางรุ่นจะลดความเร็ว CPU ลงเพื่อกันเครื่องดับ",
