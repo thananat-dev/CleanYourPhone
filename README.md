@@ -1,143 +1,144 @@
 # CleanYourPhone 📱🧹
 
-**เอามือถือของคุณคืนมาจากโฆษณา** — ปิดโฆษณาในระบบ แอปพ่วง และการส่งข้อมูลกลับผู้ผลิต
-บนมือถือ Android ที่ขายในไทย ผ่าน ADB **ไม่ต้อง root · ไม่ลบแอปจริง · สำรองก่อนทุกครั้ง · กู้คืนได้ในคำสั่งเดียว**
+**English** · [ภาษาไทย](README.th.md)
 
-[English](#english) · [วิธีใช้](#วิธีใช้) · [ยี่ห้อที่รองรับ](#ยี่ห้อที่รองรับ) · [ช่วยพัฒนา](CONTRIBUTING.md)
+**Take your phone back from the ads.** CleanYourPhone switches off system ads, bloatware and
+manufacturer telemetry on Android phones over ADB, and tells you why your phone feels slow.
+**No root · nothing actually deleted · automatic backup · one-command restore.**
+
+Built first for phones sold in Thailand (Xiaomi, OPPO, realme, vivo, Samsung), but the same
+ROMs ship worldwide.
+
+[Usage](#usage) · [Why is my phone slow?](#why-is-my-phone-slow) · [Supported brands](#supported-brands) · [Contributing](CONTRIBUTING.md)
 
 ---
 
-## ทำไมต้องมี
+## Why
 
-มือถือ Xiaomi, OPPO, realme, vivo และ Samsung หลายรุ่นมีโฆษณาโผล่ในล็อกสกรีน ในตัวจัดการไฟล์
-ตอนติดตั้งแอป และในแจ้งเตือน พร้อมแอปพ่วงที่ลบไม่ได้และบริการพื้นหลังที่ส่งข้อมูลการใช้งานกลับผู้ผลิต
-คนส่วนใหญ่ไม่รู้ว่าปิดได้ และคนที่รู้ก็ต้องนั่งพิมพ์คำสั่งทีละบรรทัด
+Many Xiaomi, OPPO, realme, vivo and Samsung phones show ads on the lock screen, in the file
+manager, when you install an app, and in notifications. They also come with apps you can't
+uninstall and background services that send usage data back to the manufacturer. Most people
+don't know these can be switched off, and those who do have to type commands one package at a time.
 
-CleanYourPhone รวม **รายการแพ็กเกจแยกตามยี่ห้อ** ที่ชุมชนช่วยกันตรวจ และให้ **AI agent** พาคุณทำทีละขั้น
+CleanYourPhone keeps **per-brand package lists** that the community checks together, and lets an
+**AI agent** walk you through the whole thing step by step.
 
-## วิธีใช้
+## Usage
 
-### แบบง่าย: ให้ AI ทำให้ (~15 นาที)
+### Easy: let an AI do it (~15 minutes)
 
-1. ติดตั้ง [Claude Code](https://claude.com/claude-code), Codex CLI หรือ Gemini CLI
-2. ดาวน์โหลดโปรเจกต์นี้
+1. Install [Claude Code](https://claude.com/claude-code), Codex CLI or Gemini CLI
+2. Download this project
    ```bash
    git clone https://github.com/thananat-dev/CleanYourPhone.git
    cd CleanYourPhone
    ```
-3. พิมพ์กับ AI: **`อ่าน PROMPT.md แล้วช่วยทำความสะอาดมือถือของฉัน`**
+3. Tell the AI: **`Read PROMPT.md and help me clean up my phone`**
 
-AI จะพาเปิดโหมดนักพัฒนา เชื่อมต่อมือถือ สแกน แล้วถามคุณก่อนปิดทุกครั้ง
+The AI helps you turn on developer mode, connect the phone and scan it. It asks before it
+switches anything off.
 
-### แบบทำเอง
+### Manual
 
-ต้องมี Python 3.9+ และ [Android platform-tools](https://developer.android.com/tools/releases/platform-tools) (`adb`)
+Requires Python 3.9+ and [Android platform-tools](https://developer.android.com/tools/releases/platform-tools) (`adb`).
+No other dependencies.
 
 ```bash
-python cyp.py info                                  # ดูข้อมูลเครื่อง
-python cyp.py doctor                                # ตรวจว่าเครื่องช้าเพราะอะไร
-python cyp.py scan                                  # ดูว่าเจออะไรในเครื่อง
-python cyp.py apply --tier safe --dry-run           # ดูก่อนว่าจะปิดอะไร
-python cyp.py apply --tier safe                     # ปิดจริง (สำรองให้อัตโนมัติ)
-python cyp.py apply --tier recommended              # ระดับถัดไป
-python cyp.py restore                               # ย้อนการ apply ครั้งล่าสุด
-python cyp.py restore --original                    # คืนเครื่องเป็นสภาพก่อนใช้เครื่องมือ
+python cyp.py info                                  # device and ROM info
+python cyp.py doctor                                # why is my phone slow?
+python cyp.py scan                                  # what's on this phone
+python cyp.py apply --tier safe --dry-run           # preview what will be disabled
+python cyp.py apply --tier safe                     # do it (backup is automatic)
+python cyp.py apply --tier recommended              # next tier
+python cyp.py restore                               # undo the last apply
+python cyp.py restore --original                    # return to the state before you first used the tool
 ```
 
-เชื่อมผ่าน Wi-Fi (Android 11+): เปิด *Wireless debugging* แล้ว
+Over Wi-Fi (Android 11+): turn on *Wireless debugging*, then
 ```bash
-python cyp.py connect 192.168.1.20:37155 --pair-code 123456   # พอร์ตจับคู่
-python cyp.py connect 192.168.1.20:41427                      # พอร์ตหลัก
+python cyp.py connect 192.168.1.20:37155 --pair-code 123456   # pairing port
+python cyp.py connect 192.168.1.20:41427                      # main port
 ```
 
-## ตรวจว่าเครื่องช้าเพราะอะไร
+## Why is my phone slow?
 
-`python cyp.py doctor` อ่านค่าจากเครื่องอย่างเดียว (ไม่เปลี่ยนอะไร) แล้วสรุปเป็นภาษาไทย
-พร้อมคะแนน 0–100 และเรียงสาเหตุตามผลกระทบ
+`python cyp.py doctor` only reads from the phone and never changes anything. It gives a score
+from 0 to 100 and lists the causes with the biggest impact first. Each cause says why it slows
+the phone down and what to do about it.
 
 ```
 🩺 สุขภาพเครื่อง Redmi Note 11 · Android 13
    คะแนน 20/100 — ควรแก้ไข
 
 สาเหตุที่ทำให้ช้า (เรียงจากผลกระทบมากไปน้อย)
- 1. 🔴 พื้นที่เหลือน้อยมาก (เหลือ 3.1 GB, 3%)
-    ทำไม: หน่วยความจำแฟลชจะเขียนช้าลงมากเมื่อใกล้เต็ม ...
-    แก้: ลบวิดีโอ/ไฟล์ที่ไม่ใช้ ล้างแคชของ LINE, TikTok, Facebook ...
- 2. 🔴 RAM ไม่พอ ระบบต้องปิดแอปเบื้องหลังบ่อย
- 3. 🔴 CPU ทำงานหนักตลอดเวลา (58%)
-    ทำไม: แอปที่ใช้ CPU มากสุด: Facebook, TikTok — ...
- 4. 🔴 เครื่องร้อนจนถูกลดความเร็ว (44°C)
+ 1. 🔴 พื้นที่เหลือน้อยมาก (เหลือ 3.1 GB, 3%)          ← storage almost full
+ 2. 🔴 RAM ไม่พอ ระบบต้องปิดแอปเบื้องหลังบ่อย           ← out of RAM
+ 3. 🔴 CPU ทำงานหนักตลอดเวลา (58%)                    ← CPU busy: Facebook, TikTok
+ 4. 🔴 เครื่องร้อนจนถูกลดความเร็ว (44°C)                ← thermal throttling
  ...
 ```
-<sub>ตัวอย่างจากข้อมูลจำลอง</sub>
+<sub>Sample from synthetic data. The report is in Thai for now. Use `--json` for machine-readable output, which an AI agent can explain in any language.</sub>
 
-| ตรวจอะไร | อ่านจาก |
+| Checks | Read from |
 |---|---|
-| พื้นที่เก็บข้อมูลเหลือน้อย | `df /data` |
-| RAM ไม่พอ / ใช้ RAM เสมือนหนัก | `/proc/meminfo`, `dumpsys meminfo` |
-| แอปที่กิน CPU และ RAM, ดิสก์ช้า (iowait) | `dumpsys cpuinfo`, `dumpsys meminfo` |
-| เครื่องร้อนจนถูกลดความเร็ว | `dumpsys thermalservice`, `dumpsys battery` |
-| แบตเสื่อม, โหมดประหยัดแบต | `dumpsys battery`, `settings get` |
-| แอนิเมชันช้า, ไม่ได้รีสตาร์ตนาน, แอปเยอะ | `settings get`, `/proc/uptime`, `pm list` |
-| แอปพ่วงของผู้ผลิตที่ยังเปิดอยู่ | รายการใน `lists/` |
+| Low storage | `df /data` |
+| RAM pressure, heavy zram / virtual RAM use | `/proc/meminfo`, `dumpsys meminfo` |
+| CPU and RAM hogs, slow storage (iowait) | `dumpsys cpuinfo`, `dumpsys meminfo` |
+| Thermal throttling | `dumpsys thermalservice`, `dumpsys battery` |
+| Worn battery, battery saver on | `dumpsys battery`, `settings get` |
+| Slow animations, long uptime, too many apps | `settings get`, `/proc/uptime`, `pm list` |
+| Manufacturer bloat still enabled | package lists in `lists/` |
 
-ใช้ `--json` เพื่อให้ AI agent อ่านต่อ หรือใช้ `--save-raw file.json` เพื่อเก็บค่าดิบไว้แนบใน issue
+`--save-raw file.json` saves the raw readings so you can attach them to an issue and help tune the thresholds.
 
-## ระดับความเสี่ยง
+## Risk tiers
 
-| ระดับ | ความหมาย | ตัวอย่าง |
+| Tier | Meaning | Examples |
 |---|---|---|
-| `safe` | แอปพ่วงที่ไม่มีใครใช้ ปิดแล้วไม่กระทบอะไร | Facebook App Manager, GetApps, Samsung Tips |
-| `recommended` | ตัวต้นเหตุโฆษณาและการเก็บข้อมูล | MIUI MSA, OPPO Ads, Samsung Free |
-| `advanced` | ปิดได้ แต่มีผลข้างเคียงที่ต้องรู้ก่อน | ร้านแอปของผู้ผลิต, เบราว์เซอร์ระบบ, Bixby |
+| `safe` | Preinstalled apps nobody uses. Nothing breaks when they're off | Facebook App Manager, GetApps, Samsung Tips |
+| `recommended` | The services behind the ads and data collection | MIUI MSA, OPPO Ads, Samsung Free |
+| `advanced` | Can be disabled, but with side effects you should know first | Vendor app stores, system browser, Bixby |
 
-ระดับสูงรวมระดับต่ำกว่าเสมอ และแพ็กเกจใน [`lists/_never_touch.json`](lists/_never_touch.json)
-จะไม่ถูกแตะไม่ว่ากรณีใด
+Each tier includes the ones below it. Packages in [`lists/_never_touch.json`](lists/_never_touch.json)
+are never touched under any circumstances.
 
-## ยี่ห้อที่รองรับ
+## Supported brands
 
-| ยี่ห้อ | ROM | ไฟล์ |
+| Brand | ROM | List |
 |---|---|---|
 | Xiaomi / Redmi / POCO | MIUI, HyperOS | [`xiaomi.json`](lists/xiaomi.json) |
 | OPPO / realme / OnePlus | ColorOS, realme UI, OxygenOS | [`oplus.json`](lists/oplus.json) |
 | vivo / iQOO | Funtouch OS, OriginOS | [`vivo.json`](lists/vivo.json) |
 | Samsung | One UI | [`samsung.json`](lists/samsung.json) |
-| ทุกยี่ห้อ | — | [`common.json`](lists/common.json) |
+| All brands | — | [`common.json`](lists/common.json) |
 
-> ⚠️ **รายการเริ่มต้น (v0.1) ยังต้องการการยืนยันบนเครื่องจริง** ชื่อแพ็กเกจต่างกันได้ตามรุ่นและเวอร์ชัน ROM
-> ถ้าคุณลองแล้ว ช่วย [ส่งรายงานเครื่อง](../../issues/new?template=device-report.yml) เพื่อให้คนต่อไปมั่นใจขึ้น
+> ⚠️ **The package lists still need confirming on real devices.** Package names vary by model and ROM version.
+> If you've tried it, please [send a device report](../../issues/new?template=device-report.yml) so the next person can be more confident.
 
-## ทำงานอย่างไร
+## How it works
 
-- ปิดด้วย `pm disable-user --user 0` — แอปยังอยู่ในเครื่อง แค่ไม่ทำงาน
-- ถ้า ROM ไม่ยอม (เช่น MIUI บางเวอร์ชัน) และคุณใส่ `--allow-uninstall` จะใช้ `pm uninstall -k --user 0`
-  ซึ่งถอดเฉพาะผู้ใช้ปัจจุบัน ไฟล์ APK ยังอยู่ กู้คืนด้วย `cmd package install-existing`
-- ก่อนเปลี่ยนอะไร จะบันทึกรายการแพ็กเกจทั้งหมดไว้ใน `backups/<รุ่น>-<เวลา>/backup.json`
-- `restore` เทียบสถานะปัจจุบันกับไฟล์สำรอง แล้วคืนทุกอย่างที่ต่างไป
+- Apps are switched off with `pm disable-user --user 0`. The app stays on the phone but doesn't run.
+- Some ROMs refuse that (e.g. some MIUI versions). If you pass `--allow-uninstall`, the tool uses
+  `pm uninstall -k --user 0` instead. This removes the app for the current user only. The APK stays
+  on the phone and comes back with `cmd package install-existing`.
+- Before any change, the full package state is saved to `backups/<model>-<time>/backup.json`.
+- `restore` compares the current state with the backup and reverts everything that differs.
 
-## คำถามที่พบบ่อย
+## FAQ
 
-**ประกันหายไหม?** ไม่ ไม่ได้ root หรือปลดล็อก bootloader
-**แบตจะอึดขึ้นไหม?** อาจดีขึ้นเล็กน้อยเพราะบริการพื้นหลังลดลง แต่ไม่ใช่เป้าหมายหลัก
-**อัปเดต OS แล้วเป็นอย่างไร?** บางแอปอาจถูกเปิดกลับมา ให้รัน `scan` แล้ว `apply` อีกรอบ
-**ปิดโฆษณาใน YouTube/เกมได้ไหม?** ไม่ได้ เครื่องมือนี้จัดการเฉพาะโฆษณาของระบบ ลองใช้ Private DNS อย่าง `dns.adguard-dns.com`
+**Does this void my warranty?** No. There's no root and no bootloader unlocking.
+**Will my battery last longer?** Maybe a little, since fewer background services run. That isn't the main goal.
+**What happens after an OS update?** Some apps may come back. Run `scan` and `apply` again.
+**Can it block ads in YouTube or games?** No, it only handles system ads. Try a Private DNS such as `dns.adguard-dns.com`.
 
-## ข้อจำกัดความรับผิดชอบ
+## Disclaimer
 
-ใช้งานด้วยความเสี่ยงของคุณเอง เครื่องมือนี้ออกแบบให้ย้อนกลับได้ทุกขั้น แต่ ROM แต่ละรุ่นทำงานต่างกัน
-สำรองข้อมูลสำคัญไว้ก่อนเสมอ
+Use at your own risk. Every step is designed to be reversible, but ROMs behave differently.
+Always back up important data first.
 
----
+## Credits
 
-## English
-
-**CleanYourPhone** disables system ads, bloatware and telemetry on Android phones sold in Thailand
-(Xiaomi, OPPO, realme, vivo, Samsung) over ADB — no root, nothing actually deleted, automatic backup,
-one-command restore. Inspired by [CleanYourTV](https://github.com/Gathin23/cleanyourtv).
-
-Point an AI coding agent at [`PROMPT.md`](PROMPT.md), or run `cyp.py` yourself (Python 3.9+, stdlib only).
-Package lists live in [`lists/`](lists/) as JSON with three risk tiers; contributions for new models
-are very welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+Inspired by [CleanYourTV](https://github.com/Gathin23/cleanyourtv), which does the same for Android TVs.
 
 ## License
 
