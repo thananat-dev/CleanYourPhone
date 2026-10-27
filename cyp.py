@@ -15,7 +15,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-__version__ = "0.1.0"
+import doctor
+
+__version__ = "0.2.0"
 
 ROOT = Path(__file__).resolve().parent
 LISTS_DIR = ROOT / "lists"
@@ -302,6 +304,27 @@ def cmd_restore(adb: Adb, args) -> int:
     return 0
 
 
+def cmd_doctor(adb: Adb, args) -> int:
+    """ตรวจว่าเครื่องช้าเพราะอะไร — อ่านอย่างเดียว ไม่เปลี่ยนอะไร"""
+    info = device_info(adb)
+    print("กำลังตรวจเครื่อง (ใช้เวลาประมาณ 10–20 วินาที)...", file=sys.stderr)
+    raw = doctor.collect(adb)
+    state = snapshot(adb)
+    installed, disabled = set(state["installed"]), set(state["disabled"])
+    bloat = [e["id"] for e in candidates(info["family"], "recommended")
+             if e["id"] in installed and e["id"] not in disabled]
+    report = doctor.diagnose(raw, bloat_enabled=bloat)
+    if args.json:
+        print(json.dumps({"device": info, **report.to_dict()}, indent=2, ensure_ascii=False))
+    else:
+        title = f"{info['brand']} {info['model']} · Android {info['android']}"
+        print(doctor.render(report, title))
+    if args.save_raw:
+        Path(args.save_raw).write_text(json.dumps(raw, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"\nบันทึกค่าดิบไว้ที่ {args.save_raw}", file=sys.stderr)
+    return 0
+
+
 def cmd_connect(adb: Adb, args) -> int:
     if args.pair_code:
         print(adb.raw("pair", args.address, args.pair_code).strip())
@@ -323,6 +346,11 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--pair-code", help="รหัสจับคู่ 6 หลัก (ใช้กับพอร์ตสำหรับ pair)")
 
     sub.add_parser("info", help="ดูข้อมูลเครื่องและ ROM")
+
+    d = sub.add_parser("doctor", help="ตรวจว่าเครื่องช้าเพราะอะไร (อ่านอย่างเดียว)")
+    d.add_argument("--json", action="store_true", help="แสดงผลเป็น JSON สำหรับ AI agent")
+    d.add_argument("--save-raw", metavar="FILE",
+                   help="บันทึกค่าดิบจากเครื่อง (ใช้แนบใน issue เพื่อช่วยปรับเกณฑ์)")
     sub.add_parser("backup", help="สำรองสถานะแพ็กเกจ")
 
     s = sub.add_parser("scan", help="ดูว่าแพ็กเกจไหนในรายการอยู่ในเครื่อง")
@@ -348,7 +376,8 @@ def main(argv: list[str] | None = None, adb: Adb | None = None) -> int:
     args = build_parser().parse_args(argv)
     adb = adb or Adb(args.serial)
     handlers = {"connect": cmd_connect, "info": cmd_info, "backup": cmd_backup,
-                "scan": cmd_scan, "apply": cmd_apply, "restore": cmd_restore}
+                "scan": cmd_scan, "apply": cmd_apply, "restore": cmd_restore,
+                "doctor": cmd_doctor}
     try:
         result = handlers[args.cmd](adb, args)
         return result if isinstance(result, int) else 0

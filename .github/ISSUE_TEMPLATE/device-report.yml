@@ -23,6 +23,12 @@ body:
       render: text
     validations:
       required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: ผลจาก `python cyp.py doctor` (ถ้ามี)
+      description: ถ้ารันก่อนและหลัง apply ช่วยแปะทั้งสองครั้ง
+      render: text
   - type: dropdown
     id: tier
     attributes:

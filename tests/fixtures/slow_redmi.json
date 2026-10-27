@@ -1,0 +1,18 @@
+{
+  "_note": "synthetic sample shaped like a Redmi Note (MIUI) — replace with real --save-raw dumps",
+  "df": "Filesystem        1K-blocks      Used Available Use% Mounted on\n/dev/block/dm-48  110231552 107012096   3219456  98% /data\n",
+  "proc_meminfo": "MemTotal:        3824416 kB\nMemFree:           81232 kB\nMemAvailable:     301248 kB\nSwapTotal:       2097148 kB\nSwapFree:         412000 kB\n",
+  "meminfo": "Applications Memory Usage (in Kilobytes):\nUptime: 1234567 Realtime: 1234567\n\nTotal PSS by process:\n    512,340K: com.facebook.katana (pid 4321 / activities)\n    402,110K: system (pid 1543)\n    310,876K: jp.naver.line.android (pid 5544)\n    250,004K: com.ss.android.ugc.trill (pid 6655)\n    120,000K: com.miui.home (pid 2001 / activities)\n\nTotal PSS by OOM adjustment:\n    402,110K: System\n\nTotal RAM: 3,824,416K (status low)\n Free RAM:   301,248K\n",
+  "cpuinfo": "Load: 9.1 / 8.7 / 8.5\nCPU usage from 120000ms to 5000ms ago (2026-10-27 15:00:00.000 to 2026-10-27 15:01:55.000):\n  21% 4321/com.facebook.katana: 15% user + 6% kernel / faults: 1200 minor\n  9.4% 1543/system_server: 5% user + 4.4% kernel\n  6.1% 6655/com.ss.android.ugc.trill: 4% user + 2.1% kernel\n  2% 777/com.miui.analytics: 1% user + 1% kernel\n58% TOTAL: 34% user + 17% kernel + 6.2% iowait + 0.8% irq\n",
+  "thermal": "IsStatusOverride: false\nThermal Status: 2\nCached temperatures:\n\tTemperature{mValue=44.1, mType=3, mName=skin, mStatus=2}\n\tTemperature{mValue=61.0, mType=0, mName=cpu-1-0, mStatus=0}\n",
+  "battery": "Current Battery Service state:\n  AC powered: false\n  USB powered: true\n  status: 2\n  health: 2\n  present: true\n  level: 64\n  temperature: 412\n",
+  "low_power": "0\n",
+  "anim": "1.0\n1.5\n1.0\n",
+  "uptime": "1814400.52 3200000.10\n",
+  "cores": "0-7\n",
+  "user_apps": [
+    "com.facebook.katana",
+    "jp.naver.line.android",
+    "com.ss.android.ugc.trill"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "_note": "synthetic sample of a healthy phone",
+  "df": "Filesystem        1K-blocks     Used Available Use% Mounted on\n/dev/block/dm-50  233000000 90000000 143000000  39% /data\n",
+  "proc_meminfo": "MemTotal:        7700000 kB\nMemAvailable:    3100000 kB\nSwapTotal:       4194300 kB\nSwapFree:        3900000 kB\n",
+  "meminfo": "Total PSS by process:\n    350,000K: system (pid 1500)\n    210,000K: jp.naver.line.android (pid 5544)\n\nTotal RAM: 7,700,000K (status normal)\n",
+  "cpuinfo": "CPU usage from 60000ms to 1000ms ago:\n  3% 1500/system_server: 2% user + 1% kernel\n6.5% TOTAL: 4% user + 2% kernel + 0.3% iowait\n",
+  "thermal": "Thermal Status: 0\n\tTemperature{mValue=31.0, mType=3, mName=skin, mStatus=0}\n",
+  "battery": "  level: 90\n  health: 2\n  temperature: 300\n",
+  "low_power": "null\n",
+  "anim": "null\nnull\nnull\n",
+  "uptime": "86400.00 100000.00\n",
+  "cores": "0-3,4-7\n",
+  "user_apps": [
+    "jp.naver.line.android"
+  ]
+}
