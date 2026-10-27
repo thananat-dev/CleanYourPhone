@@ -34,6 +34,8 @@ APP_NAMES = {
     "com.tencent.ig": "PUBG Mobile", "com.garena.game.kgth": "RoV",
     "com.mobile.legends": "Mobile Legends", "com.netflix.mediaclient": "Netflix",
     "com.spotify.music": "Spotify", "com.whatsapp": "WhatsApp",
+    "com.huawei.health": "Huawei Health", "com.mi.health": "Mi Fitness",
+    "com.xiaomi.wearable": "Mi Fitness", "com.samsung.android.app.watchmanager": "Galaxy Wearable",
 }
 
 
@@ -216,6 +218,16 @@ def _short(pkg: str) -> str:
     return pkg.split(":")[0]
 
 
+def by_app(procs: list[dict], key: str, user_apps: set[str]) -> list[dict]:
+    """รวมโปรเซสของแอปเดียวกัน (เช่น app กับ app:daemon) เป็นแถวเดียว เฉพาะแอปที่ผู้ใช้ลงเอง"""
+    totals: dict[str, float] = {}
+    for p in procs:
+        pkg = _short(p["name"])
+        if pkg in user_apps:
+            totals[pkg] = totals.get(pkg, 0) + p[key]
+    return [{"name": k, key: v} for k, v in sorted(totals.items(), key=lambda kv: -kv[1])]
+
+
 def diagnose(raw: dict, bloat_enabled: list[str] | None = None) -> Report:
     r = Report()
     user_apps = set(raw.get("user_apps") or [])
@@ -263,7 +275,7 @@ def diagnose(raw: dict, bloat_enabled: list[str] | None = None) -> Report:
                   "ใช้แอปเวอร์ชัน Lite และอย่าเปิดแอปหนักพร้อมกันหลายตัว")
     else:
         r.unknown.append("ram")
-    hogs = [p for p in mem["procs"] if _short(p["name"]) in user_apps][:5]
+    hogs = by_app(mem["procs"], "kb", user_apps)[:5]
     if hogs:
         r.facts["ram_hogs"] = [f"{app_name(p['name'])} {p['kb'] / 1024:.0f} MB" for p in hogs]
 
@@ -274,7 +286,7 @@ def diagnose(raw: dict, bloat_enabled: list[str] | None = None) -> Report:
         r.facts["cores"] = cores
     if cpu["total"] is not None:
         r.facts["cpu"] = f"{cpu['total']:.0f}% (iowait {cpu['iowait']:.1f}%)"
-        busy = [p for p in cpu["procs"] if _short(p["name"]) in user_apps and p["pct"] >= 5][:3]
+        busy = [p for p in by_app(cpu["procs"], "pct", user_apps) if p["pct"] >= 5][:3]
         if busy:
             r.facts["cpu_hogs"] = [f"{app_name(p['name'])} {p['pct']:.0f}%" for p in busy]
         who = ", ".join(app_name(p["name"]) for p in busy)
@@ -286,7 +298,8 @@ def diagnose(raw: dict, bloat_enabled: list[str] | None = None) -> Report:
         elif cpu["total"] >= 25:
             r.add("medium", "cpu", f"CPU ทำงานพื้นหลังค่อนข้างมาก ({cpu['total']:.0f}%)",
                   why, "ปิดการทำงานเบื้องหลัง/ซิงก์อัตโนมัติของแอปเหล่านี้")
-        if cpu["iowait"] >= 5:
+        # 3%: Galaxy A14 ที่พื้นที่เต็ม 97% วัดได้ 4.8% และกระตุกชัดเจน หลังเคลียร์เหลือ 0% (issue #1)
+        if cpu["iowait"] >= 3:
             r.add("medium", "iowait", f"CPU รอการอ่านเขียนดิสก์ (iowait {cpu['iowait']:.1f}%)",
                   "หน่วยความจำอ่านเขียนช้า มักเกิดจากพื้นที่ใกล้เต็มหรือแฟลชเสื่อมตามอายุ",
                   "เคลียร์พื้นที่ให้เหลืออย่างน้อย 20% แล้วรีสตาร์ตเครื่อง")

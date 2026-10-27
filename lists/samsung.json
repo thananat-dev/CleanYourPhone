@@ -41,8 +41,8 @@
     {
       "id": "com.samsung.android.app.watchmanagerstub",
       "name": "Galaxy Wearable stub",
-      "tier": "safe",
-      "note": "ถ้าใช้ Galaxy Watch อยู่อย่าปิด"
+      "tier": "advanced",
+      "note": "ตัวเชื่อม Galaxy Watch / Galaxy Buds กับแอป Galaxy Wearable ถ้าใช้นาฬิกาหรือหูฟัง Samsung อยู่ห้ามปิด จะเชื่อมต่อไม่ได้"
     },
     {
       "id": "com.samsung.android.visionintelligence",
@@ -61,6 +61,18 @@
       "name": "Bixby Voice",
       "tier": "advanced",
       "note": "ปิดแล้วใช้ Bixby ไม่ได้ ปุ่มข้างอาจต้องตั้งค่าใหม่"
+    },
+    {
+      "id": "com.aura.oobe.samsung.gl",
+      "name": "AppCloud (Aura / ironSource)",
+      "tier": "recommended",
+      "note": "แนะนำและติดตั้งแอปสปอนเซอร์อัตโนมัติ พบใน Galaxy A/M ปิดแล้วไม่กระทบการใช้งาน"
+    },
+    {
+      "id": "com.sec.spp.push",
+      "name": "Samsung Push Service",
+      "tier": "advanced",
+      "note": "ส่งแจ้งเตือนโปรโมชันของ Samsung แต่แอป Samsung อื่น (Samsung Account, SmartThings, Galaxy Store, Find My Mobile) ก็ใช้รับแจ้งเตือนด้วย ปิดแล้วอาจไม่ได้รับแจ้งเตือนจากแอปเหล่านี้"
     }
   ]
 }

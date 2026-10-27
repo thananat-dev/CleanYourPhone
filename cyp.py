@@ -38,7 +38,7 @@ ROM_PROPS = {
     "HyperOS": "ro.mi.os.version.name",
     "ColorOS": "ro.build.version.oplusrom",
     "FuntouchOS/OriginOS": "ro.vivo.os.version",
-    "OneUI": "ro.build.version.oneui",
+    "One UI": "ro.build.version.oneui",
 }
 
 
@@ -124,6 +124,14 @@ def candidates(family: str | None, max_tier: str) -> list[dict]:
 
 # ---------------------------------------------------------------------- commands
 
+def format_rom_version(rom: str, val: str) -> str:
+    """One UI เก็บเวอร์ชันเป็นตัวเลขแบบ MMmmpp เช่น 70000 → 7.0, 60100 → 6.1"""
+    if rom == "One UI" and val.isdigit() and len(val) >= 5:
+        n = int(val)
+        return f"{n // 10000}.{(n // 100) % 100}"
+    return val
+
+
 def device_info(adb: Adb) -> dict:
     info = {
         "brand": adb.getprop("ro.product.brand"),
@@ -137,7 +145,7 @@ def device_info(adb: Adb) -> dict:
     for rom, prop in ROM_PROPS.items():
         val = adb.getprop(prop)
         if val:
-            info["rom"] = f"{rom} {val}"
+            info["rom"] = f"{rom} {format_rom_version(rom, val)}"
             break
     info["family"] = brand_family(info["brand"]) or brand_family(info["manufacturer"])
     return info

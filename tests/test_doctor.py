@@ -96,6 +96,18 @@ class DiagnoseTest(unittest.TestCase):
         s = doctor.diagnose(load("slow_redmi"), bloat_enabled=["x.y"]).score
         self.assertTrue(5 <= s < 40, s)
 
+    def test_processes_of_same_app_are_grouped(self):
+        raw = load("healthy") | {
+            "user_apps": ["com.huawei.health"],
+            "meminfo": "Total PSS by process:\n    622,000K: com.huawei.health (pid 1)\n"
+                       "     93,000K: com.huawei.health:daemon (pid 2)\n\nTotal RAM: 1K (status normal)\n"}
+        self.assertEqual(doctor.diagnose(raw).facts["ram_hogs"], ["Huawei Health 698 MB"])
+
+    def test_iowait_from_galaxy_a14_report_is_flagged(self):
+        # issue #1: พื้นที่เต็ม 97%, iowait 4.8%, ผู้ใช้รู้สึกกระตุก
+        raw = load("healthy") | {"cpuinfo": "15% TOTAL: 8% user + 2% kernel + 4.8% iowait\n"}
+        self.assertIn("iowait", {f.key for f in doctor.diagnose(raw).findings})
+
     def test_battery_saver_flagged(self):
         raw = load("healthy") | {"low_power": "1"}
         self.assertIn("low_power", {f.key for f in doctor.diagnose(raw).findings})

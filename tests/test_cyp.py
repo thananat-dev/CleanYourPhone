@@ -69,6 +69,11 @@ class CypTest(unittest.TestCase):
         self.assertEqual(cyp.brand_family("realme"), "oplus")
         self.assertIsNone(cyp.brand_family("nokia"))
 
+    def test_one_ui_version_is_readable(self):
+        self.assertEqual(cyp.format_rom_version("One UI", "70000"), "7.0")
+        self.assertEqual(cyp.format_rom_version("One UI", "60100"), "6.1")
+        self.assertEqual(cyp.format_rom_version("MIUI", "V140"), "V140")
+
     def test_tiers_are_cumulative(self):
         safe = {e["id"] for e in cyp.candidates("xiaomi", "safe")}
         rec = {e["id"] for e in cyp.candidates("xiaomi", "recommended")}

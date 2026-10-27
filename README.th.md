@@ -98,12 +98,12 @@ python cyp.py connect 192.168.1.20:41427                      # พอร์ต�
 
 ## ยี่ห้อที่รองรับ
 
-| ยี่ห้อ | ROM | ไฟล์ |
+| ยี่ห้อ | ROM | ไฟล์ · ทดสอบแล้วบน |
 |---|---|---|
 | Xiaomi / Redmi / POCO | MIUI, HyperOS | [`xiaomi.json`](lists/xiaomi.json) |
 | OPPO / realme / OnePlus | ColorOS, realme UI, OxygenOS | [`oplus.json`](lists/oplus.json) |
 | vivo / iQOO | Funtouch OS, OriginOS | [`vivo.json`](lists/vivo.json) |
-| Samsung | One UI | [`samsung.json`](lists/samsung.json) |
+| Samsung | One UI | [`samsung.json`](lists/samsung.json) · ✅ Galaxy A14 4G, One UI 7, ระดับ `safe` ([#1](../../issues/1)) |
 | ทุกยี่ห้อ | — | [`common.json`](lists/common.json) |
 
 > ⚠️ **รายการแพ็กเกจยังต้องการการยืนยันบนเครื่องจริง** ชื่อแพ็กเกจต่างกันได้ตามรุ่นและเวอร์ชัน ROM

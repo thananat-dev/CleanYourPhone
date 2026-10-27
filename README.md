@@ -104,12 +104,12 @@ are never touched under any circumstances.
 
 ## Supported brands
 
-| Brand | ROM | List |
+| Brand | ROM | List · tested on |
 |---|---|---|
 | Xiaomi / Redmi / POCO | MIUI, HyperOS | [`xiaomi.json`](lists/xiaomi.json) |
 | OPPO / realme / OnePlus | ColorOS, realme UI, OxygenOS | [`oplus.json`](lists/oplus.json) |
 | vivo / iQOO | Funtouch OS, OriginOS | [`vivo.json`](lists/vivo.json) |
-| Samsung | One UI | [`samsung.json`](lists/samsung.json) |
+| Samsung | One UI | [`samsung.json`](lists/samsung.json) · ✅ Galaxy A14 4G, One UI 7, `safe` tier ([#1](../../issues/1)) |
 | All brands | — | [`common.json`](lists/common.json) |
 
 > ⚠️ **The package lists still need confirming on real devices.** Package names vary by model and ROM version.
