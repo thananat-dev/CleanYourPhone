@@ -5,6 +5,7 @@
 """
 import io
 import json
+import re
 import sys
 import unittest
 from contextlib import redirect_stdout
@@ -129,26 +130,24 @@ class RealDeviceTest(unittest.TestCase):
         self.assertEqual(r.facts["temps"]["battery"], 30.0)   # SUBBAT 0.0 ไม่ถูกนำมาคิด
         self.assertTrue(r.facts["ram_hogs"][0].startswith("Huawei Health"))  # รวม :DaemonService แล้ว
 
-    def test_galaxy_a14_before_cleanup(self):
-        # issue #1: ค่าดิบจริงตอนพื้นที่เต็ม 97% จากวิดีโอ ~80 GB ผู้ใช้รู้สึกกระตุกชัดเจน
-        r = doctor.diagnose(load("galaxy_a14_oneui7_before"))
+    def test_galaxy_a14_simulated_full_storage(self):
+        # จำลอง ไม่ใช่ค่าดิบจริง: ใช้ค่าดิบจริงหลังเคลียร์ แล้วแก้พื้นที่และ iowait
+        # ให้เป็นตัวเลขที่ผู้ใช้รายงานตอนก่อนลบวิดีโอใน issue #1 (เต็ม 97%, iowait 4.8%)
+        raw = load("galaxy_a14_oneui7")
+        raw["df"] = raw["df"].replace("23920620  88729620  22%", "109397873   3383439  97%")
+        raw["cpuinfo"] = re.sub(r"^[\d.]+% TOTAL:.*$", "15% TOTAL: 8% user + 2% kernel + 4.8% iowait",
+                                raw["cpuinfo"], flags=re.M)
+        r = doctor.diagnose(raw)
         keys = {f.key: f.level for f in r.findings}
         self.assertEqual(keys.get("storage"), "high")
-        self.assertEqual(keys.get("iowait"), "medium")  # เครื่องนี้แสดง iowait แยกบรรทัดใต้ TOTAL
-        self.assertEqual(keys.get("uptime"), "low")
+        self.assertEqual(keys.get("iowait"), "medium")
         self.assertEqual(r.ranked()[0].key, "storage")
-        self.assertIn("iowait 4.8%", r.facts["cpu"])
-
-    def test_galaxy_a14_before_vs_after(self):
-        before = doctor.diagnose(load("galaxy_a14_oneui7_before")).score
-        after = doctor.diagnose(load("galaxy_a14_oneui7")).score
-        self.assertLess(before, 70)
-        self.assertEqual(after, 100)
 
     def test_pss_preferred_over_rss(self):
-        # Android 15 ให้ทั้ง RSS (มาก่อน) และ PSS — ต้องใช้ PSS: Huawei Health = 381,941K + 57,642K
-        raw = load("galaxy_a14_oneui7_before")
-        self.assertEqual(doctor.diagnose(raw).facts["ram_hogs"][0], "Huawei Health 429 MB")
+        # ค่าดิบจริงจาก Android 15 มีทั้ง RSS (มาก่อน) และ PSS ต้องใช้ PSS
+        # Huawei Health: PSS 416,730K + 49,917K = 456 MB (ถ้าใช้ RSS จะได้ 480 MB)
+        raw = load("galaxy_a14_oneui7")
+        self.assertEqual(doctor.diagnose(raw).facts["ram_hogs"][0], "Huawei Health 456 MB")
 
     def test_worn_samsung_battery(self):
         raw = load("galaxy_a14_oneui7")

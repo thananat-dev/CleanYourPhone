@@ -132,9 +132,7 @@ def parse_cpuinfo(text: str) -> dict:
     tm = re.search(r"^\s*([\d.]+)% TOTAL:(.*)$", text, re.M)
     if tm:
         total = float(tm.group(1))
-        # บางเครื่อง (เช่น Galaxy A14 / One UI 7) แสดง iowait แยกอีกบรรทัดใต้ TOTAL
-        im = (re.search(r"([\d.]+)% iowait", tm.group(2))
-              or re.search(r"^\s*([\d.]+)% iowait\s*$", text, re.M))
+        im = re.search(r"([\d.]+)% iowait", tm.group(2))
         iowait = float(im.group(1)) if im else 0.0
     return {"total": total, "iowait": iowait, "procs": procs}
 
