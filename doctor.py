@@ -112,7 +112,9 @@ def parse_dumpsys_meminfo(text: str) -> dict:
     if m:
         status = m.group(1).lower()
     procs: list[dict] = []
-    section = re.search(r"Total (?:PSS|RSS) by process:\n(.*?)(?:\n\s*\n|\Z)", text, re.S)
+    # PSS นับหน่วยความจำที่ใช้ร่วมกันแบบหารแบ่ง จึงแม่นกว่า RSS — Android 15 มีทั้งสองแบบ โดย RSS มาก่อน
+    section = (re.search(r"Total PSS by process:\n(.*?)(?:\n\s*\n|\Z)", text, re.S)
+               or re.search(r"Total RSS by process:\n(.*?)(?:\n\s*\n|\Z)", text, re.S))
     if section:
         for line in section.group(1).splitlines():
             pm = re.match(r"\s*([\d,]+)K:\s+(\S+)\s+\(pid", line)
@@ -130,7 +132,9 @@ def parse_cpuinfo(text: str) -> dict:
     tm = re.search(r"^\s*([\d.]+)% TOTAL:(.*)$", text, re.M)
     if tm:
         total = float(tm.group(1))
-        im = re.search(r"([\d.]+)% iowait", tm.group(2))
+        # บางเครื่อง (เช่น Galaxy A14 / One UI 7) แสดง iowait แยกอีกบรรทัดใต้ TOTAL
+        im = (re.search(r"([\d.]+)% iowait", tm.group(2))
+              or re.search(r"^\s*([\d.]+)% iowait\s*$", text, re.M))
         iowait = float(im.group(1)) if im else 0.0
     return {"total": total, "iowait": iowait, "procs": procs}
 
