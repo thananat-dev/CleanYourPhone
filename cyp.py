@@ -328,6 +328,7 @@ def cmd_doctor(adb: Adb, args) -> int:
         title = f"{info['brand']} {info['model']} · Android {info['android']}"
         print(doctor.render(report, title))
     if args.save_raw:
+        Path(args.save_raw).parent.mkdir(parents=True, exist_ok=True)
         Path(args.save_raw).write_text(json.dumps(raw, indent=2, ensure_ascii=False), encoding="utf-8")
         print(f"\nบันทึกค่าดิบไว้ที่ {args.save_raw}", file=sys.stderr)
     return 0

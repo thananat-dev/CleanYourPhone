@@ -1,5 +1,7 @@
 # ไฟล์สำรองของแต่ละเครื่อง — มีรายการแอปส่วนตัว ห้าม commit
 backups/
+# ค่าดิบจาก doctor --save-raw ที่วางไว้ในโฟลเดอร์หลัก (before.json, after.json ฯลฯ) — มีรายชื่อแอปส่วนตัว
+/*.json
 __pycache__/
 *.pyc
 .venv/

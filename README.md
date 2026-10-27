@@ -89,8 +89,24 @@ the phone down and what to do about it.
 | Slow animations, long uptime, too many apps | `settings get`, `/proc/uptime`, `pm list` |
 | Manufacturer bloat still enabled | package lists in `lists/` |
 
-`--save-raw file.json` saves the raw readings so you can attach them to an issue and help tune the thresholds.
-Run `python tools/anonymize_dump.py file.json -o file.anon.json` first to hide the names of private apps.
+### Phone slow right now? Save the raw data before fixing anything
+
+Raw readings from a phone that is **slow at this moment** are the most useful data for tuning doctor,
+and they're impossible to get back once you've cleaned up. Run this first, **before** deleting files,
+restarting, or running `apply`:
+
+```bash
+python cyp.py doctor --save-raw before.json   # 1. before changing anything
+# ... free up space, restart, cyp.py apply ...
+python cyp.py doctor --save-raw after.json    # 2. after fixing
+python tools/anonymize_dump.py before.json -o before.anon.json   # 3. hide private app names
+python tools/anonymize_dump.py after.json  -o after.anon.json
+```
+
+Attach both `.anon.json` files to a [device report](../../issues/new?template=device-report.yml) **as they are**.
+Please don't edit them, merge parts from different times, or rebuild a missing file from notes or chat
+history. Tests rely on the exact text the phone prints. If you forgot the "before" file, just send
+"after" and describe the earlier state in words.
 
 ## Risk tiers
 

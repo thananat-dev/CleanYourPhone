@@ -197,6 +197,15 @@ class DoctorCommandTest(unittest.TestCase):
         self.assertEqual(adb.disabled, set())
         self.assertEqual(adb.log, [])  # ไม่มีคำสั่ง pm ที่เปลี่ยนสถานะเลย
 
+    def test_save_raw_creates_missing_folder(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "backups" / "doctor-before.json"  # ยังไม่มีโฟลเดอร์ backups/
+            with redirect_stdout(io.StringIO()):
+                cyp.main(["doctor", "--save-raw", str(target)], adb=self.make_adb("healthy"))
+            self.assertEqual(set(json.loads(target.read_text(encoding="utf-8"))["user_apps"]),
+                             set(load("healthy")["user_apps"]))
+
     def test_json_output(self):
         adb = self.make_adb("healthy")
         buf = io.StringIO()
