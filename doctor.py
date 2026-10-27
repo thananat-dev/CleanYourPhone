@@ -83,7 +83,7 @@ def parse_df(text: str) -> dict | None:
     """`df -k /data` → total/used/avail เป็น kB"""
     for line in reversed(text.strip().splitlines()):
         t = line.split()
-        if len(t) >= 6 and t[-1] == "/data" and t[-2].endswith("%"):
+        if len(t) >= 6 and (t[-1] == "/data" or t[-1].startswith("/data/")) and t[-2].endswith("%"):
             try:
                 return {"total": int(t[-5]), "used": int(t[-4]), "avail": int(t[-3])}
             except ValueError:

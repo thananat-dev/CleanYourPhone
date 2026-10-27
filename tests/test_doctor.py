@@ -28,6 +28,10 @@ class ParserTest(unittest.TestCase):
         d = doctor.parse_df(load("slow_redmi")["df"])
         self.assertEqual(d["avail"], 3219456)
         self.assertIsNone(doctor.parse_df("df: /data: Permission denied"))
+        # รองรับ Samsung / modern Android mount point เช่น /data/user/0
+        d_samsung = doctor.parse_df("Filesystem 1K-blocks Used Available Use% Mounted on\n/dev/block/dm-57 112781312 24433896 88216344 22% /data/user/0")
+        self.assertIsNotNone(d_samsung)
+        self.assertEqual(d_samsung["avail"], 88216344)
 
     def test_meminfo_status_and_procs(self):
         m = doctor.parse_dumpsys_meminfo(load("slow_redmi")["meminfo"])
