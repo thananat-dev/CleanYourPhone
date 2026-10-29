@@ -126,7 +126,8 @@ def parse_dumpsys_meminfo(text: str) -> dict:
 def parse_cpuinfo(text: str) -> dict:
     """`dumpsys cpuinfo` → total%, iowait% และรายการโปรเซสที่กิน CPU"""
     procs = []
-    for m in re.finditer(r"^\s*([\d.]+)% (\d+)/([^:\s]+):", text, re.M):
+    # บรรทัดโปรเซสย่อหน้า 2 ช่อง ส่วน thread ย่อยของโปรเซส (เช่นบน MIUI) ย่อหน้า 4 ช่อง — นับเฉพาะโปรเซส
+    for m in re.finditer(r"^ {0,3}([\d.]+)% (\d+)/([^:\s]+):", text, re.M):
         procs.append({"name": m.group(3), "pct": float(m.group(1))})
     total = iowait = None
     tm = re.search(r"^\s*([\d.]+)% TOTAL:(.*)$", text, re.M)

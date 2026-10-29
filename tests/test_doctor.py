@@ -154,6 +154,23 @@ class RealDeviceTest(unittest.TestCase):
         raw["battery"] = raw["battery"].replace("mSavedBatteryAsoc: [98]", "mSavedBatteryAsoc: [74]")
         self.assertIn("battery_health", {f.key for f in doctor.diagnose(raw).findings})
 
+    def test_miui_thread_lines_are_not_counted_as_processes(self):
+        # issue #2: MIUI แสดง thread ย่อย (ย่อหน้า 4 ช่อง) ใต้โปรเซส เช่น "    17% 1602/android.bg:"
+        c = doctor.parse_cpuinfo(load("redmi_note10_5g_miui14")["cpuinfo"])
+        names = {p["name"] for p in c["procs"]}
+        self.assertEqual(len(c["procs"]), 68)
+        self.assertIn("system_server", names)
+        self.assertNotIn("HeapTaskDaemon", names)
+        self.assertNotIn("android.bg", names)
+
+    def test_thread_named_like_its_app_is_not_double_counted(self):
+        raw = load("healthy") | {
+            "user_apps": ["com.whatsapp"],
+            "cpuinfo": "  20% 900/com.whatsapp: 15% user + 5% kernel\n"
+                       "    12% 900/com.whatsapp: 9% user + 3% kernel\n"
+                       "30% TOTAL: 20% user + 10% kernel + 0% iowait\n"}
+        self.assertEqual(doctor.diagnose(raw).facts["cpu_hogs"], ["WhatsApp 20%"])
+
     def test_redmi_note10_5g_after_recommended(self):
         # issue #2: Redmi Note 10 5G (MIUI 14) หลัง apply --tier recommended
         raw = load("redmi_note10_5g_miui14")
