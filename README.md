@@ -123,7 +123,7 @@ are never touched under any circumstances.
 
 | Brand | ROM | List · tested on |
 |---|---|---|
-| Xiaomi / Redmi / POCO | MIUI, HyperOS | [`xiaomi.json`](lists/xiaomi.json) |
+| Xiaomi / Redmi / POCO | MIUI, HyperOS | [`xiaomi.json`](lists/xiaomi.json) · ✅ Redmi Note 10 5G, MIUI 14, `recommended` tier ([#2](../../issues/2)) |
 | OPPO / realme / OnePlus | ColorOS, realme UI, OxygenOS | [`oplus.json`](lists/oplus.json) |
 | vivo / iQOO | Funtouch OS, OriginOS | [`vivo.json`](lists/vivo.json) |
 | Samsung | One UI | [`samsung.json`](lists/samsung.json) · ✅ Galaxy A14 4G, One UI 7, `safe` tier ([#1](../../issues/1)) |

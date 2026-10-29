@@ -154,6 +154,18 @@ class RealDeviceTest(unittest.TestCase):
         raw["battery"] = raw["battery"].replace("mSavedBatteryAsoc: [98]", "mSavedBatteryAsoc: [74]")
         self.assertIn("battery_health", {f.key for f in doctor.diagnose(raw).findings})
 
+    def test_redmi_note10_5g_after_recommended(self):
+        # issue #2: Redmi Note 10 5G (MIUI 14) หลัง apply --tier recommended
+        raw = load("redmi_note10_5g_miui14")
+        r = doctor.diagnose(raw)
+        self.assertEqual([f for f in r.findings if f.level != "tip"], [])
+        self.assertEqual(r.score, 100)
+        self.assertEqual(r.unknown, [])
+        self.assertIn("73%", r.facts["storage"])
+        self.assertEqual(r.facts["cores"], 8)
+        self.assertEqual(r.facts["thermal"], "ปกติ")
+        self.assertEqual(r.facts["battery"], "99%, สภาพดี")
+
 
 class DoctorCommandTest(unittest.TestCase):
     """ทดสอบทั้งเส้นทาง: FakeAdb → collect → diagnose → render"""

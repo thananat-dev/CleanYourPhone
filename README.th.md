@@ -118,7 +118,7 @@ python tools/anonymize_dump.py after.json  -o after.anon.json
 
 | ยี่ห้อ | ROM | ไฟล์ · ทดสอบแล้วบน |
 |---|---|---|
-| Xiaomi / Redmi / POCO | MIUI, HyperOS | [`xiaomi.json`](lists/xiaomi.json) |
+| Xiaomi / Redmi / POCO | MIUI, HyperOS | [`xiaomi.json`](lists/xiaomi.json) · ✅ Redmi Note 10 5G, MIUI 14, ระดับ `recommended` ([#2](../../issues/2)) |
 | OPPO / realme / OnePlus | ColorOS, realme UI, OxygenOS | [`oplus.json`](lists/oplus.json) |
 | vivo / iQOO | Funtouch OS, OriginOS | [`vivo.json`](lists/vivo.json) |
 | Samsung | One UI | [`samsung.json`](lists/samsung.json) · ✅ Galaxy A14 4G, One UI 7, ระดับ `safe` ([#1](../../issues/1)) |
